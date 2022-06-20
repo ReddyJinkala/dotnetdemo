@@ -25,18 +25,27 @@ stages:
     - script: dotnet build --configuration $(buildConfiguration)
       displayName: 'dotnet build $(buildConfiguration)'
   
-    - script: dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
-      displayName: Publish Project 
-  
+    # - script: dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
+    #   displayName: Publish Project 
+    # - script: dotnet test -c $(buildConfiguration) 
+    #   displayName: Dotnet Test
+    
+    # - task: Npm@1
+    #   displayName: Test UI
+    #   inputs:
+    #     command: 'custom'
+    #     workingDir: 'ClientApp'
+    #     customCommand: 'run test --watch=false'
+    
     - task: Npm@1
-      displayName: Test UI
+      displayName: 'Run the Client Uit Test Cases'  
       inputs:
         command: 'custom'
         workingDir: 'ClientApp'
-        customCommand: 'run test --watch=false'
-
+        customCommand: 'run test'
     - task: PublishBuildArtifacts@1
       inputs:
+        
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
